@@ -15,9 +15,8 @@ const ownerSchema=mongoose.Schema({
         type:Array,
         default:[]
     },
-    contact:Number,
     picture:String,
     gstin:String
 });
 
-module.exports= mongoose.model('user',ownerSchema);
+module.exports= mongoose.model('owner',ownerSchema);

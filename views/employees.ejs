@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee List</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="font-sans bg-gray-100">
+    <nav
+      class="w-full fixed top-0 left-0 flex justify-between px-6 py-4 bg-white shadow-md"
+    >
+      <span class="text-3xl text-green-600 font-semibold">Dashboard</span>
+
+      <% var loggedin = typeof loggedin !== "undefined" ? loggedin : true %> 
+      <% if (loggedin) { %>
+      <div class="flex gap-6 text-lg font-medium">
+        <a href="/dashboard" class="hover:text-green-800">Dashboard</a>
+        <a href="/owners/admin" class="hover:text-green-800">Create Employee</a>
+        <a href="/employees" class="hover:text-green-800">Employee List</a>
+        <a href="/employeess/logout" class="text-red-600 hover:text-red-800">Logout</a>
+      </div>
+      <% } %>
+    </nav>
+        
+    <div class="pt-20 px-6 my-4 mx-6">
+      <!-- Combined search bar and sorting options into a single flex container -->
+      <div class="flex justify-between items-center mb-4 space-x-4">
+        <!-- Search Bar -->
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search by name or email"
+          class="px-4 py-2 border border-gray-300 rounded-md w-1/2"
+          onkeyup="searchEmployees()"
+        />
+        <div class="flex text-lg font-medium">
+          <span>Total Employee :</span>
+          <h1 class="text-bold pl-1"> <%= totalCount %> </h1>
+        </div>
+        <!-- Sorting Options -->
+        <div class="flex items-center space-x-2">
+          <label class="text-lg font-medium">Sort by:</label>
+          <select id="sortOption" class="px-4 py-2 border border-gray-300 rounded-md" onchange="sortTable()">
+            <option value="id">ID</option>
+            <option value="name">Name</option>
+            <option value="email">Email</option>
+            <option value="date">Date</option>
+          </select>
+          <button onclick="toggleSortDirection()" class="px-4 py-2 bg-gray-200 rounded-md">▲</button>
+        </div>
+      </div>
+
+      <script>
+        let sortDirection = 'asc'; // Default sort direction is ascending
+
+        function searchEmployees() {
+          const input = document.getElementById("searchInput").value.toLowerCase();
+          const rows = document.querySelectorAll("tbody tr");
+
+          rows.forEach((row) => {
+            const name = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
+            const email = row.querySelector("td:nth-child(4)").textContent.toLowerCase();
+
+            if (name.includes(input) || email.includes(input)) {
+              row.style.display = "";
+            } else {
+              row.style.display = "none";
+            }
+          });
+        }
+
+        function sortTable() {
+          const table = document.querySelector("tbody");
+          const rows = Array.from(table.querySelectorAll("tr"));
+          const sortOption = document.getElementById("sortOption").value;
+
+          rows.sort((a, b) => {
+            let aValue, bValue;
+
+            switch (sortOption) {
+              case 'name':
+                aValue = a.querySelector("td:nth-child(3)").textContent.toLowerCase();
+                bValue = b.querySelector("td:nth-child(3)").textContent.toLowerCase();
+                break;
+              case 'email':
+                aValue = a.querySelector("td:nth-child(4)").textContent.toLowerCase();
+                bValue = b.querySelector("td:nth-child(4)").textContent.toLowerCase();
+                break;
+              case 'id':
+                aValue = parseInt(a.querySelector("td:nth-child(1)").textContent);
+                bValue = parseInt(b.querySelector("td:nth-child(1)").textContent);
+                break;
+              case 'date':
+                aValue = new Date(a.querySelector("td:nth-child(9)").textContent);
+                bValue = new Date(b.querySelector("td:nth-child(9)").textContent);
+                break;
+            }
+
+            if (sortDirection === 'asc') {
+              return aValue > bValue ? 1 : -1;
+            } else {
+              return aValue < bValue ? 1 : -1;
+            }
+          });
+
+          rows.forEach(row => table.appendChild(row));
+        }
+
+        function toggleSortDirection() {
+          sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+          sortTable();
+        }
+      </script>
+
+      <% if (employees && employees.length > 0) { %>
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 shadow-lg rounded-md">
+          <thead>
+            <tr class="w-full border-b border-gray-300 bg-gray-50">
+              <th class="px-4 py-2 text-left">#</th>
+              <th class="px-4 py-2 text-left">Image</th>
+              <th class="px-4 py-2 text-left">Name</th>
+              <th class="px-4 py-2 text-left">Email</th>
+              <th class="px-4 py-2 text-left">Mobile</th>
+              <th class="px-4 py-2 text-left">Gender</th>
+              <th class="px-4 py-2 text-left">Designation</th>
+              <th class="px-4 py-2 text-left">Course</th>
+              <th class="px-4 py-2 text-left">Created Date</th>
+              <th class="px-4 py-2 text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% employees.reverse().forEach(function(employee, index) { %>
+            <tr class="border-b border-gray-300">
+              <td class="px-4 py-2 text-center"><%= index + 1 %></td>
+              <td class="px-4 py-2 text-center">
+                <% if (employee.image) { %>
+                  <img
+                    class="w-16 h-16 object-contain rounded-full mx-auto"
+                    src="data:image/jpeg;base64,<%= employee.image %>" 
+                    alt="Employee Image"
+                  />
+                <% } else { %>
+                  <div class="w-16 h-16 bg-gray-200 rounded-full mx-auto flex items-center justify-center">
+                    <span class="text-gray-600">No Image</span>
+                  </div>
+                <% } %>
+              </td>
+              <td class="px-4 py-2"><%= employee.name %></td>
+              <td class="px-4 py-2"><%= employee.email %></td>
+              <td class="px-4 py-2"><%= employee.mobile %></td>
+              <td class="px-4 py-2"><%= employee.gender %></td>
+              <td class="px-4 py-2"><%= employee.designation %></td>
+              <td class="px-4 py-2"><%= employee.course %></td>
+              <td class="px-4 py-2"><%= employee.createdDate.toDateString() %></td>
+              <td class="px-4 py-2 text-center">
+                <a href="/edit/<%= employee._id %>" class="text-green-600 hover:text-green-900">Update</a>
+                <a href="/delete/<%= employee._id %>" class="text-red-600 hover:text-red-800 ml-4">Delete</a>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+
+        <div class="flex justify-center mt-4" id="pagination"></div>
+        <script>
+          const rowsPerPage = 5; 
+          let currentPage = 1;
+
+          function displayPage(page) {
+            const rows = document.querySelectorAll("tbody tr");
+            const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+            rows.forEach((row, index) => {
+              row.style.display = (index >= (page - 1) * rowsPerPage && index < page * rowsPerPage) ? "" : "none";
+            });
+
+            updatePaginationControls(totalPages);
+          }
+
+          function updatePaginationControls(totalPages) {
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+
+            for (let i = 1; i <= totalPages; i++) {
+              const button = document.createElement("button");
+              button.textContent = i;
+              button.className = `px-4 py-2 mx-1 ${i === currentPage ? 'bg-gray-300' : 'bg-gray-100'}`;
+              button.onclick = () => {
+                currentPage = i;
+                displayPage(currentPage);
+              };
+              pagination.appendChild(button);
+            }
+          }
+
+    
+          displayPage(currentPage);
+        </script>
+      </div>
+      <% } else { %>
+      <p class="text-center text-gray-600">No employees found.</p>
+      <% } %>
+    </div>
+  </body>
+</html>

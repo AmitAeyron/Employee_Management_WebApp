@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="font-sans bg-gray-100 text-gray-900">
+    <nav class="w-full fixed top-0 left-0 flex justify-between px-6 py-4 bg-white shadow-md">
+      <span class="text-3xl text-green-600 font-semibold">Dashboard</span>
+
+      <% var loggedin = typeof loggedin !== "undefined" ? loggedin : true %>
+      <% if (loggedin) { %>
+      <div class="flex gap-6 text-lg font-medium">
+        <a href="/" class="hover:text-green-800">Home</a>
+        <a href="/owners/admin" class="hover:text-green-800">Create Employee</a>
+        <a href="/employees" class="hover:text-green-800">Employee List</a>
+        <a href="/users/logout" class="text-red-600 hover:text-red-800">Logout</a>
+      </div>
+      <% } %>
+    </nav>
+
+    <div class="pt-20 min-h-screen flex">
+      <aside class="w-64 bg-white shadow-lg p-6">
+        <h2 class="text-2xl font-bold mb-6">Admin Panel</h2>
+        <ul class="space-y-4">
+          <li><a href="/" class="block text-lg hover:text-green-600">Home</a></li>
+          <li><a href="/owners/admin" class="block text-lg hover:text-green-600">Create Employee</a></li>
+          <li><a href="/employees" class="block text-lg hover:text-green-600">Employees List</a></li>
+          <li><a href="/users/logout" class="block text-lg text-red-600 hover:text-red-800">Logout</a></li>
+        </ul>
+      </aside>
+
+      <main class="flex-1 p-6 bg-gray-50">
+        <h1 class="text-4xl font-bold mb-6">Welcome to the Admin Panel</h1>
+        <p class="text-lg mb-4">Use the navigation on the left to manage employees and other settings.</p>
+        <!-- Add additional content here -->
+      </main>
+    </div>
+  </body>
+</html>
