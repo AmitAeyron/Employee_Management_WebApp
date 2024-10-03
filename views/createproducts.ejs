@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Create Employee</title>
+    <title>Employee_Management_WebApp </title>
     <link
       href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
       rel="stylesheet"
@@ -104,7 +104,7 @@
                 </div>
               </fieldset>
 
-              <div>
+              <!-- <div>
                 <label for="course" class="block text-sm font-medium text-gray-700">Course</label>
                 <input
                   type="text"
@@ -113,7 +113,32 @@
                   placeholder="Course"
                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
+              </div> -->
+
+              
+              <div>
+                <fieldset>
+                  <legend class="block text-sm font-medium text-gray-700">Course</legend>
+                  <div class="mt-1 space-y-2">
+                    <label class="inline-flex items-center">
+                      <input type="checkbox" name="course" value="BCA" class="form-checkbox text-indigo-600" />
+                      <span class="ml-2 text-gray-700">BCA</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                      <input type="checkbox" name="course" value="MCA" class="form-checkbox text-indigo-600" />
+                      <span class="ml-2 text-gray-700">MCA</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                      <input type="checkbox" name="course" value="BSC" class="form-checkbox text-indigo-600" />
+                      <span class="ml-2 text-gray-700">BSC</span>
+                    </label>
+                  </div>
+                </fieldset>
               </div>
+              
+       
+
+
 
               <div>
                 <label for="image" class="block text-sm font-medium text-gray-700">Employee Image</label>
