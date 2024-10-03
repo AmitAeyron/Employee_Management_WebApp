@@ -87,9 +87,11 @@ router.post("/update/:id", upload.single('image'), async function (req, res, nex
   }
 });
 
-router.get("/logout", isLoggIn, function (req, res, next) {
-  res.cookie("token", "");
+router.post("/employees/logout", isLoggIn, function (req, res, next) {
+  res.clearCookie("token"); 
+  res.redirect("/"); 
 });
+
 
 
 module.exports = router;

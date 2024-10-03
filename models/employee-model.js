@@ -6,7 +6,9 @@ const employeeSchema = mongoose.Schema({
   mobile:String,
   designation:String,
   gender:String,
-  course:String,
+  course: {
+    type: [String],  // This allows the `course` field to accept an array of strings.
+  },
   image: String,
   createdDate:{
     type:Date,
